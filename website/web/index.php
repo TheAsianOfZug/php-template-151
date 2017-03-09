@@ -9,8 +9,12 @@ switch($_SERVER["REQUEST_URI"]) {
 	case "/":
 		(new dhu\Controller\IndexController($tmpl))->homepage();
 		break;
-	case "/testrout":
-		echo "test";
+// 	case "/testrout":
+// 		echo "test";
+// 		break;
+	
+	case "/login":
+		(new dhu\Controller\LoginController($tmpl))->showlogin();
 		break;
 	default:
 		$matches = [];
