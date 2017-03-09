@@ -1,9 +1,9 @@
 {
-    "name": "ihrname/Datenbankprojekt",
+    "name": "dhu/Datenbankprojekt",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "ihrname\\": "src/"
+            "dhu\\": "src/"
         }
     },
     "require": {
