@@ -1,32 +1,47 @@
 <?php
+use dhu\Factory;
+
 error_reporting(E_ALL);
 
 require_once ("../vendor/autoload.php");
-$tmpl = new dhu\SimpleTemplateEngine(__DIR__ . "/../templates/");
-$pdo = new PDO("mysql:host=mariadb;dbname=app;charset=utf8", "root", "my-secret-pw");
+$factory = Factory::createFromIniFile(__DIR__ . "/../sconfig.ini");
 
 switch ($_SERVER["REQUEST_URI"])
 {
     case "/":
-        (new dhu\Controller\IndexController($tmpl))->homepage();
+        $factory->getIndexController()->homepage();
         break;
     
     case "/login":
-        $controller = new dhu\Controller\LoginController($tmpl, $pdo);
+        $controller = $factory->getLoginController();
         if ($_SERVER["REQUEST_METHOD"] == "GET")
         {
             $controller->showlogin();
-        } else
+        }
+        else
         {
             $controller->login($_POST);
+        }
+        break;
+    
+    case "/register":
+        $controller = $factory->getRegisterController();
+        if ($_SERVER["REQUEST_METHOD"] == "GET")
+        {
+            $controller->showregister();
+        }
+        else
+        {
+            $controller->register($_POST);
         }
         break;
     default:
         $matches = [];
         if (preg_match("|^/hello/(.+)$|", $_SERVER["REQUEST_URI"], $matches))
         {
-            (new dhu\Controller\IndexController($tmpl))->greet($matches[1]);
+            $factory->getIndexController()->greet($matches[1]);
             break;
         }
         echo "Not Found";
+        break;
 }
