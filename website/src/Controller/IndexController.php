@@ -22,15 +22,8 @@ class IndexController
         $this->template = $template;
     }
 
-    public function homepage()
+    public function showHomepage()
     {
-        echo "INDEX";
-    }
-
-    public function greet($name)
-    {
-        echo $this->template->render("hello.html.php", [
-            "name" => $name
-        ]);
+        echo $this->template->render("homepage.html.php");
     }
 }

@@ -2,14 +2,16 @@
 use dhu\Factory;
 
 error_reporting(E_ALL);
+session_start();
 
 require_once ("../vendor/autoload.php");
-$factory = Factory::createFromIniFile(__DIR__ . "/../sconfig.ini");
+$factory = Factory::createFromIniFile(__DIR__ . "/../config.ini");
 
 switch ($_SERVER["REQUEST_URI"])
 {
     case "/":
-        $factory->getIndexController()->homepage();
+        $controller = $factory->getIndexController();
+        $controller->showHomepage();
         break;
     
     case "/login":
@@ -22,6 +24,12 @@ switch ($_SERVER["REQUEST_URI"])
         {
             $controller->login($_POST);
         }
+        break;
+    
+    case "/logout":
+        $controller = $factory->getLoginController();
+        session_destroy();
+        $controller->showLogin();
         break;
     
     case "/register":

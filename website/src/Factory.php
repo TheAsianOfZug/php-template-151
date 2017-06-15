@@ -2,6 +2,7 @@
 namespace dhu;
 
 use dhu\Controller\IndexController;
+use dhu\Service\Login\LoginPdoService;
 
 class Factory
 {
@@ -15,7 +16,7 @@ class Factory
 
     public function __construct(array $config)
     {
-        $this->$config = $config;
+        $this->config = $config;
     }
 
     public function getTemplateEngine()
@@ -25,26 +26,29 @@ class Factory
 
     public function getIndexController()
     {
-        return new IndexController($this->getTemplateEngine());
+        return new Controller\IndexController($this->getTemplateEngine());
     }
 
     public function getLoginController()
     {
-        return new IndexController($this->getTemplateEngine(), $this->getLoginPdoService());
+        return new Controller\LoginController($this->getTemplateEngine(), $this->getLoginPdoService());
     }
 
     public function getRegisterController()
     {
-        return new RegisterController($this->getTemplateEngine(), $this->getLoginPdoService());
+        return new Controller\RegisterController($this->getTemplateEngine(), $this->getLoginPdoService());
     }
 
     private function getPDO()
     {
-        return new PDO("mysql:host=mariadb;dbname=app;charset=utf8", $this->$config["database"]["user"], "my-secret-pw");
+        return new \PDO("mysql:host=mariadb;dbname=app;charset=utf8",
+            $this->config["database"]["user"],
+			"my-secret-pw",
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 
     public function getLoginPdoService()
     {
-        return new LoginPdoService($this->getPDO());
+        return new Service\Login\LoginPdoService($this->getPDO());
     }
 }
