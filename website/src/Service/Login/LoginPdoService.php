@@ -3,7 +3,6 @@ namespace dhu\Service\Login;
 
 class LoginPdoService implements LoginService
 {
-
     private $pdo;
 
     public function __construct(\Pdo $pdo)

@@ -41,7 +41,7 @@ class Factory
 
     private function getPDO()
     {
-        return new \PDO("mysql:host=mariadb;dbname=app;charset=utf8",
+        return new \PDO("mysql:host=mariadb;dbname=battleShip;charset=utf8",
             $this->config["database"]["user"],
 			"my-secret-pw",
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
