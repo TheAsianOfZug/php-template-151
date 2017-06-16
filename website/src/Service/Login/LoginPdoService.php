@@ -1,6 +1,8 @@
 <?php
 namespace dhu\Service\Login;
 
+use dhu\HelperUtil;
+
 class LoginPdoService implements LoginService
 {
     private $pdo;
@@ -12,7 +14,7 @@ class LoginPdoService implements LoginService
 
     public function authenticate($username, $password)
     {
-        $hashedPassword = md5($password);
+        $hashedPassword = HelperUtil::getHashedPassword($password);
         $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email=? AND password=?");
         $stmt->bindValue(1, $username);
         $stmt->bindValue(2, $hashedPassword);

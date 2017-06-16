@@ -14,5 +14,6 @@
 			</tr>
 		</tbody>
 	</table>
-	<input type="submit" value="Register!" />
+	<input type="hidden" name="logincsrf" value="<? $registercsrf ?>"> 
+	<input type="submit" value="Register" />
 </form>

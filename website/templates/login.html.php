@@ -14,5 +14,6 @@
 			</tr>
 		</tbody>
 	</table>
-	<input type="submit" value="Login!" />
+	<input type="hidden" name="logincsrf" value="<? $logincsrf ?>"> 
+	<input type="submit" value="Login" />
 </form>

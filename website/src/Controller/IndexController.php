@@ -2,16 +2,14 @@
 namespace dhu\Controller;
 
 use dhu\SimpleTemplateEngine;
-
 class IndexController
 {
-
     /**
      *
      * @var dhu\SimpleTemplateEngine Template engines to render output
      */
     private $template;
-
+    
     /**
      *
      * @param
@@ -21,7 +19,6 @@ class IndexController
     {
         $this->template = $template;
     }
-
     public function showHomepage()
     {
         echo $this->template->render("homepage.html.php");

@@ -2,16 +2,15 @@
 namespace dhu\Controller;
 
 use dhu\SimpleTemplateEngine;
-
+use dhu\HelperUtil;
 class RegisterController
 {
-
+    
     /**
      *
      * @var dhu\SimpleTemplateEngine Template engines to render output
      */
     private $template;
-
     private $pdo;
     /**
      *
@@ -23,12 +22,13 @@ class RegisterController
         $this->template = $template;
         $this->pdo = $pdo;
     }
-
     public function showregister()
     {
-        echo $this->template->render("register.html.php");
+        $csrf = $this->factory->generateCsrf("registration");
+        echo $this->template->render("register.html.php", [
+            "registration" => $csrf
+        ]);
     }
-
     public function register(array $data)
     {
         if (! array_key_exists("email", $data) or ! array_key_exists("password", $data))
@@ -37,13 +37,16 @@ class RegisterController
             if (strlen($_POST["password"]) <= '8')
             {
                 $passwordErr += "Your Password Must Contain At Least 8 Characters!";
-            } elseif (! preg_match("#[0-9]+#", $password))
+            }
+            elseif (! preg_match("#[0-9]+#", $password))
             {
                 $passwordErr += "Your Password Must Contain At Least 1 Number!";
-            } elseif (! preg_match("#[A-Z]+#", $password))
+            }
+            elseif (! preg_match("#[A-Z]+#", $password))
             {
                 $passwordErr += "Your Password Must Contain At Least 1 Capital Letter!";
-            } elseif (! preg_match("#[a-z]+#", $password))
+            }
+            elseif (! preg_match("#[a-z]+#", $password))
             {
                 $passwordErr += "Your Password Must Contain At Least 1 Lowercase Letter!";
             }
@@ -68,9 +71,10 @@ class RegisterController
                 "email" => $data["email"]
             ]);
             echo 'User already exists';
-        } else
+        }
+        else
         {
-            $password = md5($data['password'] + $salt);
+            $password = HelperUtil::getHashedPassword($date['password']);
             $stmt = $this->pdo->prepare("INSERT INTO user(email, password) VALUES(?, ?)");
             $stmt->bindValue(1, $data["email"]);
             $stmt->bindValue(2, $password);
@@ -80,7 +84,7 @@ class RegisterController
             echo "Registered Successful";
         }
     }
-
+    
     /**
      *
      * @param
