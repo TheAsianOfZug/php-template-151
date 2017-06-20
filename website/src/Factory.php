@@ -28,7 +28,7 @@ class Factory
     }
     public function getRegisterController()
     {
-        return new Controller\RegisterController($this->getTemplateEngine(), $this->getLoginPdoService());
+        return new Controller\RegisterController($this->getTemplateEngine(), $this->getRegisterPdoService());
     }
     private function getPDO()
     {
@@ -39,5 +39,9 @@ class Factory
     public function getLoginPdoService()
     {
         return new Service\Login\LoginPdoService($this->getPDO());
+    }
+    public function getRegisterPdoService()
+    {
+        return new Service\Register\RegisterPdoService($this->getPDO());
     }
 }

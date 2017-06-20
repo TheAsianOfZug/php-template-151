@@ -3,6 +3,7 @@ namespace dhu\Controller;
 
 use dhu\SimpleTemplateEngine;
 use dhu\Service\Login\LoginService;
+use dhu\HelperUtil;
 class LoginController
 {
     
@@ -25,10 +26,26 @@ class LoginController
     }
     public function showlogin()
     {
-        $csrf = $this->factory->generateCsrf("login");
+        $csrf = HelperUtil::generateCsrf("login");
         echo $this->template->render("login.html.php", [
             "login" => $csrf
         ]);
+    }
+    public function showForgotPassword(array $data)
+    {
+
+        if (!array_key_exists("email", $data))
+        {
+        echo $this->template->render("forgotPassword.html.php",
+        [
+                "email" => ""
+        ]);
+        }
+        else
+        {
+            header("Location: /");
+            //send Mail
+        }
     }
     public function login(array $data)
     {

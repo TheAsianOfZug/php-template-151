@@ -3,6 +3,7 @@ namespace dhu\Controller;
 
 use dhu\SimpleTemplateEngine;
 use dhu\HelperUtil;
+use dhu\Service\Register\RegisterPdoService;
 class RegisterController
 {
     
@@ -11,20 +12,20 @@ class RegisterController
      * @var dhu\SimpleTemplateEngine Template engines to render output
      */
     private $template;
-    private $pdo;
+    private $registerService;
     /**
      *
      * @param
      *            dhu\SimpleTemplateEngine
      */
-    public function __construct(SimpleTemplateEngine $template, \PDO $pdo)
+    public function __construct(SimpleTemplateEngine $template, RegisterPdoService $registerService)
     {
         $this->template = $template;
-        $this->pdo = $pdo;
+        $this->registerService = $registerService;
     }
     public function showregister()
     {
-        $csrf = $this->factory->generateCsrf("registration");
+        $csrf = HelperUtil::generateCsrf("registration");
         echo $this->template->render("register.html.php", [
             "registration" => $csrf
         ]);
@@ -63,7 +64,7 @@ class RegisterController
             }
         }
         
-        $stmt = $this->getUsers($data);
+        $stmt = $this->registerService->getUsers($data);
         
         if ($stmt->rowCount() != 0)
         {
@@ -72,31 +73,7 @@ class RegisterController
             ]);
             echo 'User already exists';
         }
-        else
-        {
-            $password = HelperUtil::getHashedPassword($date['password']);
-            $stmt = $this->pdo->prepare("INSERT INTO user(email, password) VALUES(?, ?)");
-            $stmt->bindValue(1, $data["email"]);
-            $stmt->bindValue(2, $password);
-            $stmt->execute();
-            $_SESSION['email'] = $data['email'];
-            header("Location: /");
-            echo "Registered Successful";
-        }
-    }
-    
-    /**
-     *
-     * @param
-     *            data
-     */
-    private function getUsers($data)
-    {
-        $password = md5($data['password']);
-        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email=? AND password=?");
-        $stmt->bindValue(1, $data["email"]);
-        $stmt->bindValue(2, $password);
-        $stmt->execute();
-        return $stmt;
+        
+        $this->registerService->registerUser($data);
     }
 }
