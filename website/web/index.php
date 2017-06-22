@@ -38,7 +38,7 @@ switch ($_SERVER["REQUEST_URI"])
         }
         break;
         
-    case "/forgotPassword":
+    case "/setNewPassword":
         $controller = $factory->getLoginController();
         if ($_SERVER["REQUEST_METHOD"] == "GET")
         {
