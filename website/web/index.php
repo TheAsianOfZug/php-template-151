@@ -1,7 +1,7 @@
 <?php
 use dhu\Factory;
 
-error_reporting(none);
+error_reporting(E_ALL);
 session_start();
 
 require_once ("../vendor/autoload.php");

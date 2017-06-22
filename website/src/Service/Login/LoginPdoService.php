@@ -33,7 +33,7 @@ class LoginPdoService implements LoginService
         
     }
     
-    public function setNewPassword($date)
+    public function setNewPassword(array $data)
     {
         $hashedPassword = HelperUtil::getHashedPassword($password);
         $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email=? AND password=?");
