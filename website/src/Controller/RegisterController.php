@@ -39,8 +39,9 @@ class RegisterController
         }
         if (array_key_exists("email", $data) and array_key_exists("password", $data))
         {
+            $password = $data["password"];
             $passwordErr = "";
-            if (strlen($_POST["password"]) <= '8')
+            if (strlen($password) <= '8')
             {
                 $passwordErr = "Your Password Must Contain At Least 8 Characters!";
             }
@@ -48,13 +49,13 @@ class RegisterController
             {
                 $passwordErr = "Your Password Must Contain At Least 1 Number!";
             }
+            elseif (!preg_match("#[a-z]#", $password))
+            {
+                $passwordErr = "Your Password Must Contain At Least 1 Lowercase Letter!";
+            }
             elseif (!preg_match("#[A-Z]+#", $password))
             {
                 $passwordErr = "Your Password Must Contain At Least 1 Capital Letter!";
-            }
-            elseif (!preg_match("#[a-z]+#", $password))
-            {
-                $passwordErr = "Your Password Must Contain At Least 1 Lowercase Letter!";
             }
             if ($passwordErr == "")
             {
