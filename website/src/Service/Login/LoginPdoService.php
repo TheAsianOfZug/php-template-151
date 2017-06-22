@@ -2,16 +2,13 @@
 namespace dhu\Service\Login;
 
 use dhu\HelperUtil;
-
 class LoginPdoService implements LoginService
 {
     private $pdo;
-
     public function __construct(\Pdo $pdo)
     {
         $this->pdo = $pdo;
     }
-
     public function authenticate($username, $password)
     {
         $hashedPassword = HelperUtil::getHashedPassword($password);
@@ -29,5 +26,9 @@ class LoginPdoService implements LoginService
         {
             return false;
         }
+    }
+    public function forgotPassword(array $data)
+    {
+        HelperUtil::sendMail($data, "Passwort vergessen", "Hallo " . $data["email"] . ",</br> Du hast anscheinend das Passwort vergessen. Naja, Pech, denn diese Funktion ist noch nicht richtig implementiert.");
     }
 }

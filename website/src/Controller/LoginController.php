@@ -33,18 +33,26 @@ class LoginController
     }
     public function showForgotPassword(array $data)
     {
-
-        if (!array_key_exists("email", $data))
+        if (! array_key_exists("email", $data))
         {
-        echo $this->template->render("forgotPassword.html.php",
-        [
+            echo $this->template->render("forgotPassword.html.php", [
                 "email" => ""
-        ]);
+            ]);
+        }
+        elseif (empty($data["email"]))
+        {
+            echo $this->template->render("forgotPassword.html.php", [
+                "email" => ""
+            ]);
         }
         else
         {
-            header("Location: /");
-            //send Mail
+            $this->loginService->forgotPassword($data);
+
+            echo $this->template->render("forgotPassword.html.php", [
+                "email" => ""
+            ]);
+            echo "Email-Adresse wurde kontaktiert.";
         }
     }
     public function login(array $data)

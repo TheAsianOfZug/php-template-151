@@ -32,48 +32,64 @@ class RegisterController
     }
     public function register(array $data)
     {
-        if (! array_key_exists("email", $data) or ! array_key_exists("password", $data))
+        if ($data["email"] == "")
+        {
+            $this->showregister();
+            return;
+        }
+        if (array_key_exists("email", $data) and array_key_exists("password", $data))
         {
             $passwordErr = "";
             if (strlen($_POST["password"]) <= '8')
             {
-                $passwordErr += "Your Password Must Contain At Least 8 Characters!";
+                $passwordErr = "Your Password Must Contain At Least 8 Characters!";
             }
-            elseif (! preg_match("#[0-9]+#", $password))
+            elseif (!preg_match("#[0-9]#", $password))
             {
-                $passwordErr += "Your Password Must Contain At Least 1 Number!";
+                $passwordErr = "Your Password Must Contain At Least 1 Number!";
             }
-            elseif (! preg_match("#[A-Z]+#", $password))
+            elseif (!preg_match("#[A-Z]+#", $password))
             {
-                $passwordErr += "Your Password Must Contain At Least 1 Capital Letter!";
+                $passwordErr = "Your Password Must Contain At Least 1 Capital Letter!";
             }
-            elseif (! preg_match("#[a-z]+#", $password))
+            elseif (!preg_match("#[a-z]+#", $password))
             {
-                $passwordErr += "Your Password Must Contain At Least 1 Lowercase Letter!";
+                $passwordErr = "Your Password Must Contain At Least 1 Lowercase Letter!";
             }
-            if (! $passwordErr != "")
+            if ($passwordErr == "")
+            {
+                $stmt = $this->registerService->getUsers($data);
+                
+                if ($stmt->rowCount() != 0)
+                {
+                    echo $this->template->render("register.html.php", [
+                        "email" => $data["email"]
+                    ]);
+                    echo 'User already exists';
+                }
+                try
+                {
+                    $this->registerService->registerUser($data);
+                    echo $this->template->render("homepage.html.php", [
+                        "email" => $data["email"]
+                    ]);
+                    echo "Registered Successful";
+                }
+                catch (Exception $e)
+                {
+                    
+                    echo $this->template->render("register.html.php", [
+                        "email" => $data["email"]
+                    ]);
+                }
+                return;
+            }
+            else
             {
                 $this->showregister();
                 echo $passwordErr;
                 return;
             }
-            if ($data['password'])
-            {
-                $this->showregister();
-                return;
-            }
         }
-        
-        $stmt = $this->registerService->getUsers($data);
-        
-        if ($stmt->rowCount() != 0)
-        {
-            echo $this->template->render("register.html.php", [
-                "email" => $data["email"]
-            ]);
-            echo 'User already exists';
-        }
-        
-        $this->registerService->registerUser($data);
     }
 }

@@ -2,7 +2,12 @@
 namespace dhu;
 
 use dhu\Controller\IndexController;
+use dhu\Controller\LoginController;
+use dhu\Controller\RegisterController;
+use dhu\Controller\GameController;
+
 use dhu\Service\Login\LoginPdoService;
+use dhu\Service\Register\RegisterPdoService;
 class Factory
 {
     private $config;
@@ -20,15 +25,19 @@ class Factory
     }
     public function getIndexController()
     {
-        return new Controller\IndexController($this->getTemplateEngine());
+        return new IndexController($this->getTemplateEngine());
     }
     public function getLoginController()
     {
-        return new Controller\LoginController($this->getTemplateEngine(), $this->getLoginPdoService());
+        return new LoginController($this->getTemplateEngine(), $this->getLoginPdoService());
     }
     public function getRegisterController()
     {
-        return new Controller\RegisterController($this->getTemplateEngine(), $this->getRegisterPdoService());
+        return new RegisterController($this->getTemplateEngine(), $this->getRegisterPdoService());
+    }
+    public function getGameController()
+    {
+        return new GameController($this->getTemplateEngine());
     }
     private function getPDO()
     {
@@ -38,10 +47,14 @@ class Factory
     }
     public function getLoginPdoService()
     {
-        return new Service\Login\LoginPdoService($this->getPDO());
+        return new LoginPdoService($this->getPDO());
     }
     public function getRegisterPdoService()
     {
-        return new Service\Register\RegisterPdoService($this->getPDO());
+        return new RegisterPdoService($this->getPDO());
+    }
+    public static function getMailer()
+    {
+        return \Swift_Mailer::newInstance(\Swift_SmtpTransport::newInstance("smtp.gmail.com", 465, "ssl")->setUsername("gibz.module.151@gmail.com")->setPassword("Pe$6A+aprunu"));
     }
 }

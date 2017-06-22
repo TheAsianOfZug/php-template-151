@@ -32,4 +32,18 @@ class HelperUtil
         }
         return $randomString;
     }
+    
+    public static function sendMail(array $data,string $subject, string $bodyContent)
+    {
+        $message = \Swift_Message::newInstance()->setSubject($subject)
+        ->setFrom(array(
+            'noreply@battleShip.ch' => 'BattleShip'
+        ))
+        ->setTo(array(
+            $data["email"] => $data["email"]
+        ))
+        ->setBody($bodyContent, 'text/html')
+        ->setContentType("text/html");
+        Factory::getMailer()->send($message);
+    }
 }

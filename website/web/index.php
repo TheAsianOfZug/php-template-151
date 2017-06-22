@@ -1,7 +1,7 @@
 <?php
 use dhu\Factory;
 
-error_reporting(E_ALL);
+error_reporting(none);
 session_start();
 
 require_once ("../vendor/autoload.php");
@@ -55,13 +55,13 @@ switch ($_SERVER["REQUEST_URI"])
             $controller->register($_POST);
         }
         break;
+        
+    case "/game":
+        $controller = $factory->getGameController();
+        $controller->showGameField();
+        break;
+            
     default:
-        $matches = [];
-        if (preg_match("|^/hello/(.+)$|", $_SERVER["REQUEST_URI"], $matches))
-        {
-            $factory->getIndexController()->greet($matches[1]);
-            break;
-        }
-        echo "Not Found";
+        echo $factory->getIndexController()->showHomepage();
         break;
 }

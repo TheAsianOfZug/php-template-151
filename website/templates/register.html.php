@@ -6,7 +6,13 @@
 </head>
 
 <body>
-<h3>REGISTER</h3>
+	<ul class="navBar">
+		<li><a href="/">Home</a></li>
+		<li><a href="/login">Login</a></li>
+		<li><a href="/register">Register</a></li>
+	</ul>
+	<div class="mainContent">
+<h3>BattleShip - Registration</h3>
 
 <form method="POST">
 	<table>
@@ -22,10 +28,9 @@
 			</tr>
 		</tbody>
 	</table>
-	<input type="hidden" name="logincsrf" value="<? $registercsrf ?>"> 
-	<input type="submit" value="Register" />
-		<a href="/" class="button">Home</a>
-</form>
+	<input type="hidden" name="registercsrf" value="<? $registercsrf ?>"> 
+	<input class="button" type="submit" value="Register"/>
+</form></div>
 </body>
 <footer>
 	<p>&copy; 2017 by Denis Huelin</p>

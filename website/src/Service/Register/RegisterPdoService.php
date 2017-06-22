@@ -11,17 +11,14 @@ class RegisterPdoService implements RegisterService
     }
     public function registerUser($data)
     {
-        $password = HelperUtil::getHashedPassword($date['password']);
+        $password = HelperUtil::getHashedPassword($data['password']);
         $stmt = $this->pdo->prepare("INSERT INTO user(email, password) VALUES(?, ?)");
         $stmt->bindValue(1, $data["email"]);
         $stmt->bindValue(2, $password);
         $stmt->execute();
         $_SESSION['email'] = $data['email'];
-        header("Location: /");
-        echo "Registered Successful";
+        HelperUtil::sendMail($data, "Du wurdest registriert", "Hallo " . $data["email"] . ",</br> Du wurdest bei uns registriert. Um anzumelden klicke <a href='https://localhost/login'>hier</a>");
     }
-    
-
     public function getUsers($data)
     {
         $password = md5($data['password']);

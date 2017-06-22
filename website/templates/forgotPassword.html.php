@@ -6,7 +6,14 @@
 </head>
 
 <body>
-<h3>FORGOT PASSWORD</h3>
+	<ul class="navBar">
+		<li><a href="/">Home</a></li>
+		<li><a href="/login">Login</a></li>
+		<li><a href="/register">Register</a></li>
+	</ul>
+	
+	<div class="mainContent">
+<h3>BattleShip - Passwort vergessen</h3>
 
 <form method="POST">
 	<table>
@@ -17,9 +24,9 @@
 			</tr>
 		</tbody>
 	</table>
-	<input type="submit" value="Send Mail" />
-		<a href="/" class="button">Home</a>
+	<input type="submit" class="button" value="Send Mail" />
 </form>
+</div>
 </body>
 <footer>
 	<p>&copy; 2017 by Denis Huelin</p>
