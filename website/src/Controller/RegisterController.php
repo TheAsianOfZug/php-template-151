@@ -78,7 +78,6 @@ class RegisterController
                 }
                 catch (Exception $e)
                 {
-                    
                     echo $this->template->render("register.html.php", [
                         "email" => $data["email"]
                     ]);

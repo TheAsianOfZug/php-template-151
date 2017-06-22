@@ -48,11 +48,50 @@ class LoginController
         else
         {
             $this->loginService->forgotPassword($data);
-
+            
             echo $this->template->render("forgotPassword.html.php", [
                 "email" => ""
             ]);
             echo "Email-Adresse wurde kontaktiert.";
+        }
+    }
+    public function showSetNewPassword(array $data)
+    {
+        if (! array_key_exists("email", $data))
+        {
+            echo $this->template->render("setNewPassword.html.php", [
+                "email" => $data["email"]
+            ]);
+        }
+        elseif (empty($data["email"]))
+        {
+            echo $this->template->render("homepage.html.php", [
+                "email" => ""
+            ]);
+        }
+    }
+    public function setNewPassword(array $data)
+    {
+        if (! array_key_exists("email", $data) or ! array_key_exists("password", $data))
+        {
+            echo $this->template->render("homepage.html.php", [
+                "email" => ""
+            ]);
+            return;
+        }
+        
+        if ($this->loginService->setNewPassword($data['email'], $data['password']))
+        {
+            session_destroy();
+            session_start();
+            $_SESSION["email"] = $data["email"];
+            header("Location: /");
+            echo "New Password set successfully!";
+        }
+        else
+        {
+            header("Location: /");
+            echo "Could not set new Password!";
         }
     }
     public function login(array $data)
